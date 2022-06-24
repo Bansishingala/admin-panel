@@ -20,11 +20,12 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import AccessibleIcon from '@mui/icons-material/Accessible';
+import { NavLink } from "react-router-dom";
 
 const drawerWidth = 240;
 const Data =[
-    { label : 'medicines' ,icon : MedicalServicesIcon , to : "/medicines"},
-    { label : 'Patient' ,icon : AccessibleIcon , to : "/Patient"}
+    { label : 'medicines' ,icon : <MedicalServicesIcon />, to : "/medicines"},
+    { label : 'Patient' ,icon : <AccessibleIcon /> , to : "/Patient"}
 ]
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -72,7 +73,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-export default function Layout() {
+export default function Layout({children}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -124,13 +125,13 @@ export default function Layout() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {[Layout].map((text, index) => (
-                        <ListItem key={text} disablePadding>
+                    {Data.map((text, index) => (
+                        <ListItem component={NavLink} exact to={text.to} key={text.label} disablePadding>
                             <ListItemButton>
                                 <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    {text.icon}
                                 </ListItemIcon>
-                                <ListItemText primary={text} />
+                                <ListItemText primary={text.label} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -151,7 +152,7 @@ export default function Layout() {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-               
+               {children}
             </Main>
         </Box>
     );

@@ -96,7 +96,7 @@ function Patient(props) {
                 <Button variant="outlined" onClick={handleClickOpen}>
                     Add Patient
                 </Button>
-                <div style={{ height: 400, width: '100%' }}>
+                {/* <div style={{ height: 400, width: '100%' }}>
                     <DataGrid
                         rows={data}
                         columns={columns}
@@ -104,7 +104,7 @@ function Patient(props) {
                         rowsPerPageOptions={[5]}
                         checkboxSelection
                     />
-                </div>
+                </div> */}
 
                 <Dialog open={open} onClose={handleClose} fullWidth>
                     <DialogTitle>Add Patient</DialogTitle>

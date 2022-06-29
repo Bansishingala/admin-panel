@@ -9,21 +9,28 @@ import DialogTitle from '@mui/material/DialogTitle';
 import * as yup from 'yup';
 import { Form, Formik, useFormik } from 'formik';
 import { DataGrid } from '@mui/x-data-grid';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 function Medicine(props) {
     const [open, setOpen] = React.useState(false);
-    const [data , setData] =  useState([])
+    const [data, setData] = useState([]);
+    const [Dopen, setDOpen] = React.useState(false);
+    const [did, setDid] = useState([0])
 
+    const handleDClickOpen = () => {
+        setDOpen(true);
+    };
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
         setOpen(false);
+        setDOpen(false);
     };
-
-
 
     let schema = yup.object().shape({
         name: yup.string().required("Please Enter Name"),
@@ -36,12 +43,12 @@ function Medicine(props) {
     const handleInsert = (values) => {
         let localData = JSON.parse(localStorage.getItem("Medicines"))
 
-        let id = Math.floor(Math.random()*1000);
+        let id = Math.floor(Math.random() * 1000);
         let data = {
             id: id,
             ...values
         }
-       
+
         if (localData === null) {
             localStorage.setItem("Medicines", JSON.stringify([data]))
         } else {
@@ -71,25 +78,53 @@ function Medicine(props) {
         },
 
     });
+    const handleDelete = (params) => {
+        let LocalData = JSON.parse(localStorage.getItem("Medicines"));
+        let fData = LocalData.filter((l) => l.id !== did)
+        localStorage.setItem("Medicines", JSON.stringify(fData))
+        LoadData()
+        console.log(params.id, fData);
+        handleClose()
+    }
 
-    const { handleBlur, handleChange, handleSubmit, errors, touched } = formikObj
+    const { handleBlur, handleChange, handleSubmit, errors, touched, values } = formikObj
 
+    const handleEdit = (params) => {
+        handleClickOpen();
+
+        formikObj.setValues(params.row)
+    }
     const columns = [
         { field: 'name', headerName: 'Name', width: 70 },
         { field: 'Price', headerName: 'Price', width: 70 },
         { field: 'Quntity', headerName: 'Quntity', width: 70 },
         { field: 'expiry', headerName: 'Expiry', width: 70 },
-       
+        {
+            field: 'action',
+            headerName: 'Action',
+            width: 170,
+            renderCell: (params) => (
+                <>
+                    <IconButton aria-label="Edit" onClick={() => { handleEdit(params) }}>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete" onClick={() => { handleDClickOpen(); setDid(params.id) }}>
+                        <DeleteIcon />
+                    </IconButton>
+                </>
+            )
+        },
+
     ];
     const LoadData = () => {
-          let LocalData = JSON.parse(localStorage.getItem("Medicines"))
+        let LocalData = JSON.parse(localStorage.getItem("Medicines"))
 
-          setData(LocalData)
+        setData(LocalData)
     }
 
-     useEffect (() => {
+    useEffect(() => {
         LoadData();
-    } , [])
+    }, [])
     return (
         <div>
             <h1>Medicine</h1>
@@ -106,6 +141,25 @@ function Medicine(props) {
                         checkboxSelection
                     />
                 </div>
+                <Dialog
+                    open={Dopen}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Are You Sure Delete?"}
+                    </DialogTitle>
+                    <DialogContent>
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>No</Button>
+                        <Button onClick={handleDelete} autoFocus>
+                            Yes
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
                 <Dialog open={open} onClose={handleClose} fullWidth>
                     <DialogTitle>Add Medicine</DialogTitle>
@@ -114,6 +168,7 @@ function Medicine(props) {
                             <DialogContent>
 
                                 <TextField
+                                value={values.name}
                                     margin="dense"
                                     name="name"
                                     label="Medicine Name"
@@ -125,6 +180,7 @@ function Medicine(props) {
                                 />
                                 {errors.name && touched.name ? <p>{errors.name}</p> : ''}
                                 <TextField
+                                    value={values.Price}
                                     margin="dense"
                                     name='Price'
                                     label="Price"
@@ -136,6 +192,7 @@ function Medicine(props) {
                                 />
                                 {errors.Price && touched.Price ? <p>{errors.Price}</p> : ''}
                                 <TextField
+                                value={values.expiry}
                                     margin="dense"
                                     name='expiry'
                                     label="Expiry"
@@ -147,6 +204,7 @@ function Medicine(props) {
                                 />
                                 {errors.expiry && touched.expiry ? <p>{errors.expiry}</p> : ''}
                                 <TextField
+                                value={values.Quntity}
                                     margin="dense"
                                     name='Quntity'
                                     label="Quntity"
@@ -160,7 +218,7 @@ function Medicine(props) {
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={handleClose}>Cancel</Button>
-                                <Button type='submit'>Subscribe</Button>
+                                <Button type='submit'>Update</Button>
                             </DialogActions>
                         </Form>
                     </Formik>

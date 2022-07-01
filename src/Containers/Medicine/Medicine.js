@@ -19,6 +19,7 @@ function Medicine(props) {
     const [data, setData] = useState([]);
     const [Dopen, setDOpen] = React.useState(false);
     const [did, setDid] = useState([0])
+    const [update, setUpdate] = useState(false)
 
     const handleDClickOpen = () => {
         setDOpen(true);
@@ -30,7 +31,30 @@ function Medicine(props) {
     const handleClose = () => {
         setOpen(false);
         setDOpen(false);
+        setUpdate(false)
+        formikObj.resetForm()
     };
+    const handleUpdate = (values) => {
+        let LocalData = JSON.parse(localStorage.getItem("Medicines"));
+
+        let udata = LocalData.map((l) => {
+            if (l.id === values.id) {
+                return values
+            } else {
+                return l
+            }
+        })
+
+
+
+     localStorage.setItem("Medicines", JSON.stringify(udata))
+        console.log(values);
+        handleClose();
+        LoadData();
+        formikObj.resetForm()
+        setUpdate(false)
+
+    }
 
     let schema = yup.object().shape({
         name: yup.string().required("Please Enter Name"),
@@ -74,7 +98,12 @@ function Medicine(props) {
         },
         validationSchema: schema,
         onSubmit: values => {
-            handleInsert(values)
+            if (update) {
+                handleUpdate(values)
+            } else {
+                handleInsert(values)
+
+            }
         },
 
     });
@@ -90,6 +119,9 @@ function Medicine(props) {
     const { handleBlur, handleChange, handleSubmit, errors, touched, values } = formikObj
 
     const handleEdit = (params) => {
+
+        setUpdate(true);
+
         handleClickOpen();
 
         formikObj.setValues(params.row)
@@ -168,7 +200,7 @@ function Medicine(props) {
                             <DialogContent>
 
                                 <TextField
-                                value={values.name}
+                                    value={values.name}
                                     margin="dense"
                                     name="name"
                                     label="Medicine Name"
@@ -192,7 +224,7 @@ function Medicine(props) {
                                 />
                                 {errors.Price && touched.Price ? <p>{errors.Price}</p> : ''}
                                 <TextField
-                                value={values.expiry}
+                                    value={values.expiry}
                                     margin="dense"
                                     name='expiry'
                                     label="Expiry"
@@ -204,7 +236,7 @@ function Medicine(props) {
                                 />
                                 {errors.expiry && touched.expiry ? <p>{errors.expiry}</p> : ''}
                                 <TextField
-                                value={values.Quntity}
+                                    value={values.Quntity}
                                     margin="dense"
                                     name='Quntity'
                                     label="Quntity"
@@ -218,7 +250,13 @@ function Medicine(props) {
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={handleClose}>Cancel</Button>
-                                <Button type='submit'>Update</Button>
+                                {
+                                    update ?
+                                        <Button type='submit'>Update</Button>
+                                        :
+                                        <Button type='submit'>submit</Button>
+
+                                }
                             </DialogActions>
                         </Form>
                     </Formik>

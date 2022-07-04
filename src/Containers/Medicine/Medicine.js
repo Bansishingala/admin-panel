@@ -165,13 +165,13 @@ function Medicine(props) {
                     Add Medicine
                 </Button>
                 <div style={{ height: 400, width: '100%' }}>
-                    <DataGrid
+                    <DataGrid >
                         rows={data}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
                         checkboxSelection
-                    />
+                        </DataGrid>
                 </div>
                 <Dialog
                     open={Dopen}

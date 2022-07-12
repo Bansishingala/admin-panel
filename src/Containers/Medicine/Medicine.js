@@ -18,8 +18,9 @@ function Medicine(props) {
     const [open, setOpen] = React.useState(false);
     const [data, setData] = useState([]);
     const [Dopen, setDOpen] = React.useState(false);
-    const [did, setDid] = useState([0])
-    const [update, setUpdate] = useState(false)
+    const [did, setDid] = useState([0]);
+    const [update, setUpdate] = useState(false);
+    const [filterData , setFilterData] = useState([]);
 
     const handleDClickOpen = () => {
         setDOpen(true);
@@ -47,7 +48,7 @@ function Medicine(props) {
 
 
 
-     localStorage.setItem("Medicines", JSON.stringify(udata))
+        localStorage.setItem("Medicines", JSON.stringify(udata))
         console.log(values);
         handleClose();
         LoadData();
@@ -111,7 +112,7 @@ function Medicine(props) {
         let LocalData = JSON.parse(localStorage.getItem("Medicines"));
         let fData = LocalData.filter((l) => l.id !== did)
         localStorage.setItem("Medicines", JSON.stringify(fData))
-        LoadData()
+        LoadData();
         console.log(params.id, fData);
         handleClose()
     }
@@ -150,13 +151,34 @@ function Medicine(props) {
     ];
     const LoadData = () => {
         let LocalData = JSON.parse(localStorage.getItem("Medicines"))
-
-        setData(LocalData)
+        console.log(LocalData);
+        if (LocalData !== null) {
+            setData(LocalData)
+        }
     }
 
     useEffect(() => {
         LoadData();
     }, [])
+
+    const handleSearch = (val) => {
+        let LocalData = JSON.parse(localStorage.getItem("Medicines"))
+
+        //console.log(val, LocalData);
+
+        let SData = LocalData.filter((s)=>(
+            s.name.toLowerCase().includes(val.toLowerCase()) ||
+            s.expiry.toString().includes(val)||
+            s.Price.toString().includes(val)||
+            s.Quntity.toString().includes(val)
+
+        ));
+        setFilterData(SData)
+        
+      
+        
+    }
+    const fData = filterData. length > 0 ? filterData :data;
     return (
         <div>
             <h1>Medicine</h1>
@@ -164,14 +186,23 @@ function Medicine(props) {
                 <Button variant="outlined" onClick={handleClickOpen}>
                     Add Medicine
                 </Button>
+                <TextField
+                   margin="dense"
+                    name="search"
+                    label="Medicine Search"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => handleSearch(e.target.value)}
+                />
                 <div style={{ height: 400, width: '100%' }}>
-                    <DataGrid >
-                        rows={data}
+                    <DataGrid
+                        rows={fData}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
                         checkboxSelection
-                        </DataGrid>
+                    />
                 </div>
                 <Dialog
                     open={Dopen}

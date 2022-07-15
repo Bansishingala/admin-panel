@@ -21,11 +21,13 @@ import MailIcon from '@mui/icons-material/Mail';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import AccessibleIcon from '@mui/icons-material/Accessible';
 import { NavLink } from "react-router-dom";
+import VaccinesIcon from '@mui/icons-material/Vaccines';
 
 const drawerWidth = 240;
 const Data =[
     { label : 'medicines' ,icon : <MedicalServicesIcon />, to : "/medicines"},
-    { label : 'Patient' ,icon : <AccessibleIcon /> , to : "/Patient"}
+    { label : 'Patient' ,icon : <AccessibleIcon /> , to : "/Patient"},
+    { label : 'Doctor' ,icon : <VaccinesIcon /> , to : "/Doctor"}
 ]
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -137,18 +139,7 @@ export default function Layout({children}) {
                     ))}
                 </List>
                 <Divider />
-                {/* <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List> */}
+               
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />

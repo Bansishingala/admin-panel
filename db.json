@@ -1,0 +1,42 @@
+{
+  "Medicines": [
+    {
+        "id": 1,
+        "name": "ABC",
+        "price": "30",
+        "quantity": "50",
+        "expiry": "2023"
+    },
+    {
+        "id": 2,
+        "name": "PQR",
+        "price": "30",
+        "quantity": "50",
+        "expiry": "2025"
+    },
+    {
+        "id": 3,
+        "name": "XYZ",
+        "price": "30",
+        "quantity": "50",
+        "expiry": "2024"
+    },
+    {
+        "id": 4,
+        "name": "DEF",
+        "price": "30",
+        "quantity": "50",
+        "expiry": "2022"
+    }
+],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

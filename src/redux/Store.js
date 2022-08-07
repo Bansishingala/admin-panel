@@ -1,7 +1,11 @@
-import { createStore } from 'redux'
-import { rootCounter } from './Reducer/Index'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import { RootReducer } from './reducer/Index'
+// import { RootReducer } from './Reducer/Index'
+// import { RootReducer } from './Reducer/Index'
 
-export const conFigure = () => {
-    let store = createStore(rootCounter)
+export const configureStore  = () => {
+    const store = createStore(RootReducer, applyMiddleware(thunk))
+
     return store
 }

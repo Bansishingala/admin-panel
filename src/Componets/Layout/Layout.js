@@ -22,12 +22,14 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import AccessibleIcon from '@mui/icons-material/Accessible';
 import { NavLink } from "react-router-dom";
 import VaccinesIcon from '@mui/icons-material/Vaccines';
+import CountertopsIcon from '@mui/icons-material/Countertops';
 
 const drawerWidth = 240;
 const Data =[
     { label : 'medicines' ,icon : <MedicalServicesIcon />, to : "/medicines"},
     { label : 'Patient' ,icon : <AccessibleIcon /> , to : "/Patient"},
-    { label : 'Doctor' ,icon : <VaccinesIcon /> , to : "/Doctor"}
+    { label : 'Doctor' ,icon : <VaccinesIcon /> , to : "/Doctor"},
+    { label : 'Counter' ,icon : <CountertopsIcon /> , to : "/Counter"}
 ]
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(

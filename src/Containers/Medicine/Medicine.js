@@ -12,6 +12,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useSelector , useDispatch } from 'react-redux';
+import { MedicineAction } from '../../Redux/Actions/Medicine.Action';
 
 
 function Medicine(props) {
@@ -150,12 +152,11 @@ function Medicine(props) {
 
     ];
     const LoadData = () => {
-        let LocalData = JSON.parse(localStorage.getItem("Medicines"))
-        console.log(LocalData);
-        if (LocalData !== null) {
-            setData(LocalData)
-        }
+        dispatch(MedicineAction());
     }
+    
+    const dispatch = useDispatch();
+    const me = useSelector( state => state.Medicines);
 
     useEffect(() => {
         LoadData();
@@ -197,7 +198,7 @@ function Medicine(props) {
                 />
                 <div style={{ height: 400, width: '100%' }}>
                     <DataGrid
-                        rows={fData}
+                        rows={me}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}

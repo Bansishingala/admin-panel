@@ -7,12 +7,13 @@ const initialval = {
 }
 
 export const MedicinesReducer = (state = initialval , action ) => {
+    console.log(action.type,action.payload);
     switch (action.type) {
         case ActionsTypes.GET_MEDICINES:
         return {
             ...state ,
             isLoading:false ,
-            medicine: ActionsTypes.payload,
+            medicine: action.payload,
             Error: ""
             
         }

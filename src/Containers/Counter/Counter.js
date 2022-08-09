@@ -14,7 +14,7 @@ function Counter(props) {
     return (
         <div>
             <button onClick={() => handleIncrement()}>+</button>
-            <p>{co.count}</p>
+            <p>{co.counter}</p>
             <button onClick={() => handleDecrement()}>-</button>
         </div>
     );

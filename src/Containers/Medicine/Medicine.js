@@ -156,7 +156,9 @@ function Medicine(props) {
     }
     
     const dispatch = useDispatch();
-    const me = useSelector( state => state.Medicines);
+    const me = useSelector( state => state.Medicine);
+
+    console.log(me.medicine);
 
     useEffect(() => {
         LoadData();
@@ -198,7 +200,7 @@ function Medicine(props) {
                 />
                 <div style={{ height: 400, width: '100%' }}>
                     <DataGrid
-                        rows={me}
+                        rows={me.medicine}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
@@ -225,7 +227,7 @@ function Medicine(props) {
                     </DialogActions>
                 </Dialog>
 
-                <Dialog open={open} onClose={handleClose} fullWidth>
+                <Dialog open={  open} onClose={handleClose} fullWidth>
                     <DialogTitle>Add Medicine</DialogTitle>
                     <Formik values={formikObj}>
                         <Form onSubmit={handleSubmit}>
